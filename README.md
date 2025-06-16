@@ -352,3 +352,57 @@ mysql> SELECT SUBSTRING(emp_id, 2, 3) AS emp_id,
 
 mysql>
 ------------------------------------------------------------------------------------------------------------------------------------
+REPLACR
+-----------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT REPLACE ('Hey Buddy','Hey','Hello');
++-------------------------------------+
+| REPLACE ('Hey Buddy','Hey','Hello') |
++-------------------------------------+
+| Hello Buddy                         |
++-------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT REPLACE ('ABCDPQR','PQR','XYZ');
++---------------------------------+
+| REPLACE ('ABCDPQR','PQR','XYZ') |
++---------------------------------+
+| ABCDXYZ                         |
++---------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT REPLACE(emp_id, 10, 10000)
+    -> AS NewEmpIDS,
+    -> name FROM emplyees;
++-----------+--------+
+| NewEmpIDS | name   |
++-----------+--------+
+| 100001    | Raju   |
+| 100003    | Paul   |
+| 100004    | Alex   |
+| 100005    | Victor |
++-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT REPLACE(emp_id, 10, 'EMP')
+    -> AS NewEmpIDS, name FROM emplyees;
++-----------+--------+
+| NewEmpIDS | name   |
++-----------+--------+
+| EMP1      | Raju   |
+| EMP3      | Paul   |
+| EMP4      | Alex   |
+| EMP5      | Victor |
++-----------+--------+
+4 rows in set (0.00 sec)
+----------------------------------------------------------------------------------------------------------------------------------------
