@@ -406,3 +406,280 @@ mysql> SELECT REPLACE(emp_id, 10, 'EMP')
 +-----------+--------+
 4 rows in set (0.00 sec)
 ----------------------------------------------------------------------------------------------------------------------------------------
+REVERSE STRING
+----------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT REVERSE('HELLO');
++------------------+
+| REVERSE('HELLO') |
++------------------+
+| OLLEH            |
++------------------+
+1 row in set (0.01 sec)
+
+select * from emplyees' at line 1
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT REVERSE(name) AS rname
+    -> from emplyees;
++--------+
+| rname  |
++--------+
+| ujaR   |
+| luaP   |
+| xelA   |
+| rotciV |
++--------+
+4 rows in set (0.00 sec)
+###############################################################################################################################################
+UPPER AND LOWER CASE
+###############################################################################################################################################
+
+mysql> select upper('abcdpqr');
++------------------+
+| upper('abcdpqr') |
++------------------+
+| ABCDPQR          |
++------------------+
+1 row in set (0.01 sec)
+
+mysql> select lower('ASDFGHJ');
++------------------+
+| lower('ASDFGHJ') |
++------------------+
+| asdfghj          |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select ucase('qwertyuiop');
++---------------------+
+| ucase('qwertyuiop') |
++---------------------+
+| QWERTYUIOP          |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select lcase('ZXCVBNM');
++------------------+
+| lcase('ZXCVBNM') |
++------------------+
+| zxcvbnm          |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select emp_id,upper(name)
+    -> from emplyees;
++--------+-------------+
+| emp_id | upper(name) |
++--------+-------------+
+|    101 | RAJU        |
+|    103 | PAUL        |
+|    104 | ALEX        |
+|    105 | VICTOR      |
++--------+-------------+
+4 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+CHAR_LENGTH
+-------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select CHAR_LENGTH('Raju');
++---------------------+
+| CHAR_LENGTH('Raju') |
++---------------------+
+|                   4 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> select CHAR_LENGTH('Raju Hello');
++---------------------------+
+| CHAR_LENGTH('Raju Hello') |
++---------------------------+
+|                        10 |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> select name, CHAR_LENGTH(name) AS Length from emplyees;
++--------+--------+
+| name   | Length |
++--------+--------+
+| Raju   |      4 |
+| Paul   |      4 |
+| Alex   |      4 |
+| Victor |      6 |
++--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE CHAR_LENGTH(name)>5;
++--------+--------+-----------+-----------+----------+
+| emp_id | name   | last_name | desig     | dept     |
++--------+--------+-----------+-----------+----------+
+|    105 | Victor | Das       | Associate | Deposite |
++--------+--------+-----------+-----------+----------+
+1 row in set (0.01 sec)
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+LEFT RIGHT REPEAT TRIM INSERT
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> SELECT INSERT ('Hey wassup',5,0,'Raju ');
++-----------------------------------+
+| INSERT ('Hey wassup',5,0,'Raju ') |
++-----------------------------------+
+| Hey Raju wassup                   |
++-----------------------------------+
+1 row in set (0.00 sec)
+
+mysql> Select left('Hey Buddy Raju', 3);
++---------------------------+
+| left('Hey Buddy Raju', 3) |
++---------------------------+
+| Hey                       |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> Select right('Hey Buddy Raju', 4);
++----------------------------+
+| right('Hey Buddy Raju', 4) |
++----------------------------+
+| Raju                       |
++----------------------------+
+1 row in set (0.00 sec)
+
+mysql> Select REPEAT('Hahahahaha ', 10);
++----------------------------------------------------------------------------------------------------------------+
+| REPEAT('Hahahahaha ', 10)                                                                                      |
++----------------------------------------------------------------------------------------------------------------+
+| Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha Hahahahaha  |
++----------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TRIM('      SHRINIVAS                                                    ');
++-----------------------------------------------------------------------------+
+| TRIM('      SHRINIVAS                                                    ') |
++-----------------------------------------------------------------------------+
+| SHRINIVAS                                                                   |
++-----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+EXERCISE 3
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+QUESTION
+
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+
+Task 1:
+101:Raju:Manager:Loan
+Task2:
+101:Raju Rastogi:Manager:Loan
+Task3
+101:Raju:MANAGER:Loan
+Task4
+L101 Raju
+C102 Sham
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+ANSWER:->
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select CONCAT_WS(':',emp_id,name,desig,dept) from emplyees;
++---------------------------------------+
+| CONCAT_WS(':',emp_id,name,desig,dept) |
++---------------------------------------+
+| 101:Raju:Manager:Loan                 |
+| 103:Paul:Associate:Loan               |
+| 104:Alex:Accountant:IT                |
+| 105:Victor:Associate:Deposite         |
++---------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select CONCAT_WS(':',emp_id,CONCAT(name,' ',last_name),desig,dept) from emplyees;
++-------------------------------------------------------------+
+| CONCAT_WS(':',emp_id,CONCAT(name,' ',last_name),desig,dept) |
++-------------------------------------------------------------+
+| 101:Raju Sharma:Manager:Loan                                |
+| 103:Paul Thomas:Associate:Loan                              |
+| 104:Alex Fernandes:Accountant:IT                            |
+| 105:Victor Das:Associate:Deposite                           |
++-------------------------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select CONCAT_WS(':',emp_id,name,UPPER(desig),dept) from emplyees;
++----------------------------------------------+
+| CONCAT_WS(':',emp_id,name,UPPER(desig),dept) |
++----------------------------------------------+
+| 101:Raju:MANAGER:Loan                        |
+| 103:Paul:ASSOCIATE:Loan                      |
+| 104:Alex:ACCOUNTANT:IT                       |
+| 105:Victor:ASSOCIATE:Deposite                |
++----------------------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT emp_id,name from emplyees;
++--------+--------+
+| emp_id | name   |
++--------+--------+
+|    101 | Raju   |
+|    103 | Paul   |
+|    104 | Alex   |
+|    105 | Victor |
++--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(dept,emp_id),name from emplyees;
++---------------------+--------+
+| CONCAT(dept,emp_id) | name   |
++---------------------+--------+
+| Loan101             | Raju   |
+| Loan103             | Paul   |
+| IT104               | Alex   |
+| Deposite105         | Victor |
++---------------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT CONCAT(LEFT(dept, 1),emp_id),name from emplyees;
++------------------------------+--------+
+| CONCAT(LEFT(dept, 1),emp_id) | name   |
++------------------------------+--------+
+| L101                         | Raju   |
+| L103                         | Paul   |
+| I104                         | Alex   |
+| D105                         | Victor |
++------------------------------+--------+
+4 rows in set (0.00 sec)
+
