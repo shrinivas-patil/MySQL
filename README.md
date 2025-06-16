@@ -98,3 +98,146 @@ mysql>mysql> select desig AS 'Design' from Emplyees;
 
 ----------------------------------------------------------------------------------------------------------------------
 
+Enter password: **********
+mysql> use bank_db;
+Database changed
+mysql> select * from emplyees;
++--------+--------+------------+----------+
+| emp_id | name   | desig      | dept     |
++--------+--------+------------+----------+
+|    101 | Raju   | Manager    | Loan     |
+|    103 | Paul   | Associate  | Loan     |
+|    104 | Alex   | Accountant | IT       |
+|    105 | Victor | Associate  | Deposite |
++--------+--------+------------+----------+
+4 rows in set (0.02 sec)
+
+mysql> ALTER TABLE Emplyees
+    -> ADD COLUMN last_name VARCHAR(50)
+    -> After name;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | NULL      | Manager    | Loan     |
+|    103 | Paul   | NULL      | Associate  | Loan     |
+|    104 | Alex   | NULL      | Accountant | IT       |
+|    105 | Victor | NULL      | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> update Emplyees SET last_name = 'Sharma' WHERE emp_id = 101;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Emplyees SET last_name = 'Thomas' WHERE emp_id = 103;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update Emplyees SET last_name = 'Fernandes' WHERE emp_id = 104;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Emplyees SET last_name = 'Das' WHERE emp_id = 105;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select CONCAT('Hey','BUDDY!');;
++------------------------+
+| CONCAT('Hey','BUDDY!') |
++------------------------+
+| HeyBUDDY!              |
++------------------------+
+1 row in set (0.01 sec)
+
+ERROR:
+No query specified
+
+mysql> select CONCAT('Hey','Buddy!','Hello');
++--------------------------------+
+| CONCAT('Hey','Buddy!','Hello') |
++--------------------------------+
+| HeyBuddy!Hello                 |
++--------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select CONCAT ('Hey',' ','Buddy!');
++-----------------------------+
+| CONCAT ('Hey',' ','Buddy!') |
++-----------------------------+
+| Hey Buddy!                  |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_id, CONCAT(name,' ',last_name) as FullName from emplyees;
++--------+----------------+
+| emp_id | FullName       |
++--------+----------------+
+|    101 | Raju Sharma    |
+|    103 | Paul Thomas    |
+|    104 | Alex Fernandes |
+|    105 | Victor Das     |
++--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+
+mysql> select emp_id,CONCAT(name,'@gamil.com') as NewName from emplyees;
++--------+------------------+
+| emp_id | NewName          |
++--------+------------------+
+|    101 | Raju@gamil.com   |
+|    103 | Paul@gamil.com   |
+|    104 | Alex@gamil.com   |
+|    105 | Victor@gamil.com |
++--------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
+
