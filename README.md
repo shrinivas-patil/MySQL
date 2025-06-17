@@ -1274,3 +1274,348 @@ mysql> select * from emplyees
 +--------+------+-----------+-----------+---------+--------+
 4 rows in set (0.00 sec)
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+GROUP BY
+--------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select dept from emplyees group by dept;
++----------+
+| dept     |
++----------+
+| Loan     |
+| Cash     |
+| IT       |
+| Deposite |
+| Account  |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> select dept,COUNT(emp_id) from emplyees group by dept;
++----------+---------------+
+| dept     | COUNT(emp_id) |
++----------+---------------+
+| Loan     |             3 |
+| Cash     |             2 |
+| IT       |             1 |
+| Deposite |             1 |
+| Account  |             2 |
++----------+---------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select desig from emplyees group by desig;
++------------+
+| desig      |
++------------+
+| Manager    |
+| Cashier    |
+| Associate  |
+| Accountant |
+| Lead       |
+| Probation  |
++------------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> select desig,COUNT(emp_id) from emplyees group by desig;
++------------+---------------+
+| desig      | COUNT(emp_id) |
++------------+---------------+
+| Manager    |             3 |
+| Cashier    |             1 |
+| Associate  |             2 |
+| Accountant |             1 |
+| Lead       |             1 |
+| Probation  |             1 |
++------------+---------------+
+6 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------------------
+FUNCTION MIN & MAX
+---------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select MAX(salary) from emplyees;
++-------------+
+| MAX(salary) |
++-------------+
+|       37000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select MIN(salary) from emplyees;
++-------------+
+| MIN(salary) |
++-------------+
+|       25000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> Select MAX(name) from emplyees;
++-----------+
+| MAX(name) |
++-----------+
+| Victor    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> Select MIN(name) from emplyees;
++-----------+
+| MIN(name) |
++-----------+
+| Alex      |
++-----------+
+1 row in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------
+SUB QUERIES MAX MIN
+----------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select emp_id,name,salary from emplyees
+    -> WHERE
+    -> Salary = (Select MAX(Salary) from emplyees);
++--------+------+--------+
+| emp_id | name | salary |
++--------+------+--------+
+|    101 | Raju |  37000 |
++--------+------+--------+
+1 row in set (0.01 sec)
+--------------------------------------------------------------------------------------------------------------
+SUM & AVG Function
+--------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select sum(Salary) from emplyees;
++-------------+
+| sum(Salary) |
++-------------+
+|      267000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select AVG(Salary) from emplyees;
++-------------+
+| AVG(Salary) |
++-------------+
+|  29666.6667 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select dept,sum(Salary) from emplyees
+    -> group by dept;
++----------+-------------+
+| dept     | sum(Salary) |
++----------+-------------+
+| Loan     |       99000 |
+| Cash     |       53000 |
+| IT       |       28000 |
+| Deposite |       26000 |
+| Account  |       61000 |
++----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select dept,COUNT(emp_id),sum(Salary) from emplyees
+    -> group by dept;
++----------+---------------+-------------+
+| dept     | COUNT(emp_id) | sum(Salary) |
++----------+---------------+-------------+
+| Loan     |             3 |       99000 |
+| Cash     |             2 |       53000 |
+| IT       |             1 |       28000 |
+| Deposite |             1 |       26000 |
+| Account  |             2 |       61000 |
++----------+---------------+-------------+
+5 rows in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------
+Exercise - 4
+DISTINCT, ORDER BY, LIKE and LIMIT
+------------------------------------------------------------------------------------------------------------------
+QUESTIONS 
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+
+1: Find Different type of departments in database?
+2: Display records with High-low salary
+3: How to see only top 3 records from a table?
+4: Show records where first name start with letter 'A'
+5: Show records where length of the lname is 4 characters
+-----------------------------------------------------------------------------------------------------------------
+ANSWER
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select COUNT(emp_id) from emplyees;
++---------------+
+| COUNT(emp_id) |
++---------------+
+|             9 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select dept,COUNT(emp_id) from emplyees
+    -> group by dept;
++----------+---------------+
+| dept     | COUNT(emp_id) |
++----------+---------------+
+| Loan     |             3 |
+| Cash     |             2 |
+| IT       |             1 |
+| Deposite |             1 |
+| Account  |             2 |
++----------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> select MIN(salary) from emplyees;
++-------------+
+| MIN(salary) |
++-------------+
+|       25000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select MAX(salary) from emplyees;
++-------------+
+| MAX(salary) |
++-------------+
+|       37000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE salary=(select MAX(salary) from emplyees);
++--------+------+-----------+---------+------+--------+
+| emp_id | name | last_name | desig   | dept | Salary |
++--------+------+-----------+---------+------+--------+
+|    101 | Raju | Sharma    | Manager | Loan |  37000 |
++--------+------+-----------+---------+------+--------+
+1 row in set (0.00 sec)
+
+mysql>  select * from emplyees
+    -> WHERE dept = "Loan";
++--------+------+-----------+-----------+------+--------+
+| emp_id | name | last_name | desig     | dept | Salary |
++--------+------+-----------+-----------+------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan |  37000 |
+|    103 | Paul | Thomas    | Associate | Loan |  32000 |
+|    109 | Rick | Watt      | Probation | Loan |  30000 |
++--------+------+-----------+-----------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql>  select SUM(Salary) from emplyees
+    -> WHERE dept = "Loan";
++-------------+
+| SUM(Salary) |
++-------------+
+|       99000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select dept,AVG(Salary) from emplyees
+    -> group by dept;
++----------+-------------+
+| dept     | AVG(Salary) |
++----------+-------------+
+| Loan     |  33000.0000 |
+| Cash     |  26500.0000 |
+| IT       |  28000.0000 |
+| Deposite |  26000.0000 |
+| Account  |  30500.0000 |
++----------+-------------+
+5 rows in set (0.01 sec)
+-------------------------------------------------------------------------------------------------------------------------------------------------------
