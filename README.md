@@ -683,3 +683,594 @@ mysql> SELECT CONCAT(LEFT(dept, 1),emp_id),name from emplyees;
 +------------------------------+--------+
 4 rows in set (0.00 sec)
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
++--------+--------+-----------+------------+----------+
+6 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------------------------------------
+INSERTING MORE VALUES
+-------------------------------------------------------------------------------------------------------------------------------
+mysql> INSERT INTO emplyees(emp_id,name,last_name,desig,dept)
+    -> Values
+    -> ('107','Alex','Watt','Lead','Cash'),
+    -> ('108','John','Paul','Manager','Account'),
+    -> ('109','Rick','Watt','Probation','Loan');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+--------------------------------------------------------------------------------
+What is DISTINCT
+------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select dept from emplyees;
++----------+
+| dept     |
++----------+
+| Loan     |
+| Cash     |
+| Loan     |
+| IT       |
+| Deposite |
+| Account  |
+| Cash     |
+| Account  |
+| Loan     |
++----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT ^C
+mysql> SELECT DISTINCT dept from emplyees;
++----------+
+| dept     |
++----------+
+| Loan     |
+| Cash     |
+| IT       |
+| Deposite |
+| Account  |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT name,last_name from emplyees;
++--------+-----------+
+| name   | last_name |
++--------+-----------+
+| Raju   | Sharma    |
+| Sham   | Mohan     |
+| Paul   | Thomas    |
+| Alex   | Fernandes |
+| Victor | Das       |
+| Rick   | Watt      |
+| Alex   | Watt      |
+| John   | Paul      |
+| Rick   | Watt      |
++--------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT name,last_name from emplyees;
++--------+-----------+
+| name   | last_name |
++--------+-----------+
+| Raju   | Sharma    |
+| Sham   | Mohan     |
+| Paul   | Thomas    |
+| Alex   | Fernandes |
+| Victor | Das       |
+| Rick   | Watt      |
+| Alex   | Watt      |
+| John   | Paul      |
++--------+-----------+
+8 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------------------
+USE BY ORDER KEY
+----------------------------------------------------------------------------------------------------------------------------------
+mysql>  select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+mysql>  select * from emplyees
+    -> order by name;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    105 | Victor | Das       | Associate  | Deposite |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.01 sec)
+
+mysql>  select * from emplyees
+    -> order by name desc;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    105 | Victor | Das       | Associate  | Deposite |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    107 | Alex   | Watt      | Lead       | Cash     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+mysql>  select dept,name from emplyees;
++----------+--------+
+| dept     | name   |
++----------+--------+
+| Loan     | Raju   |
+| Cash     | Sham   |
+| Loan     | Paul   |
+| IT       | Alex   |
+| Deposite | Victor |
+| Account  | Rick   |
+| Cash     | Alex   |
+| Account  | John   |
+| Loan     | Rick   |
++----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select dept,name from emplyees
+    -> order by dept,name;
++----------+--------+
+| dept     | name   |
++----------+--------+
+| Account  | John   |
+| Account  | Rick   |
+| Cash     | Alex   |
+| Cash     | Sham   |
+| Deposite | Victor |
+| IT       | Alex   |
+| Loan     | Paul   |
+| Loan     | Raju   |
+| Loan     | Rick   |
++----------+--------+
+9 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------
+USE OF LIKE KEYWORD
+----------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE desig LIKE "%Cash%";
++--------+------+-----------+---------+------+
+| emp_id | name | last_name | desig   | dept |
++--------+------+-----------+---------+------+
+|    102 | Sham | Mohan     | Cashier | Cash |
++--------+------+-----------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where name LIKE "%____%";
++--------+--------+-----------+------------+----------+
+| emp_id | name   | last_name | desig      | dept     |
++--------+--------+-----------+------------+----------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |
+|    103 | Paul   | Thomas    | Associate  | Loan     |
+|    104 | Alex   | Fernandes | Accountant | IT       |
+|    105 | Victor | Das       | Associate  | Deposite |
+|    106 | Rick   | Watt      | Manager    | Account  |
+|    107 | Alex   | Watt      | Lead       | Cash     |
+|    108 | John   | Paul      | Manager    | Account  |
+|    109 | Rick   | Watt      | Probation  | Loan     |
++--------+--------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    ->  where name LIKE "%r___%";
++--------+------+-----------+-----------+---------+
+| emp_id | name | last_name | desig     | dept    |
++--------+------+-----------+-----------+---------+
+|    101 | Raju | Sharma    | Manager   | Loan    |
+|    106 | Rick | Watt      | Manager   | Account |
+|    109 | Rick | Watt      | Probation | Loan    |
++--------+------+-----------+-----------+---------+
+3 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------
+ADDING SALARY COLUMN AND CHANGING SALARY
+--------------------------------------------------------------------------------------------------------------
+mysql> ALTER TABLE emplyees
+    -> ADD COLUMN
+    -> Salary INT NOT NULL
+    -> DEFAULT 25000;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  25000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  25000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  25000 |
+|    105 | Victor | Das       | Associate  | Deposite |  25000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  25000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  25000 |
+|    108 | John   | Paul      | Manager    | Account  |  25000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  25000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> update emplyees
+    -> SET Salary=37000
+    -> Where name='Raju';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  25000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  25000 |
+|    105 | Victor | Das       | Associate  | Deposite |  25000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  25000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  25000 |
+|    108 | John   | Paul      | Manager    | Account  |  25000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  25000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> UPDATE emplyees SET Salary = 32000 WHERE name = 'Paul';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE emplyees SET Salary = 28000 WHERE name = 'Alex';
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> UPDATE emplyees SET Salary = 28000 WHERE name = 'Alex';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 2  Changed: 0  Warnings: 0
+
+mysql> UPDATE emplyees SET Salary = 30000 WHERE name = 'Rick';
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> UPDATE emplyees SET Salary = 31000 WHERE name = 'John';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE emplyees SET Salary = 26000 WHERE name = 'Victor';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------------------
+LIMIT
+----------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees LIMIT 5;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
++--------+--------+-----------+------------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emplyees LIMIT 3, 2;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
++--------+--------+-----------+------------+----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emplyees order by Salary DESC;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees order by Salary DESC
+    -> LIMIT 1;
++--------+------+-----------+---------+------+--------+
+| emp_id | name | last_name | desig   | dept | Salary |
++--------+------+-----------+---------+------+--------+
+|    101 | Raju | Sharma    | Manager | Loan |  37000 |
++--------+------+-----------+---------+------+--------+
+1 row in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+COUNT()
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select COUNT(*) from emplyees;
++----------+
+| COUNT(*) |
++----------+
+|        9 |
++----------+
+1 row in set (0.02 sec)
+
+mysql>  select COUNT(name) from emplyees;
++-------------+
+| COUNT(name) |
++-------------+
+|           9 |
++-------------+
+1 row in set (0.02 sec)
+
+mysql>  select COUNT(dept) from emplyees;
++-------------+
+| COUNT(dept) |
++-------------+
+|           9 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql>  select COUNT(DISTINCT dept) from emplyees;
++----------------------+
+| COUNT(DISTINCT dept) |
++----------------------+
+|                    5 |
++----------------------+
+1 row in set (0.01 sec)
+
+mysql>  select COUNT(emp_id) from emplyees
+    -> WHERE desig = "Manager";
++---------------+
+| COUNT(emp_id) |
++---------------+
+|             3 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql>  select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------
+Exercise - 4
+DISTINCT, ORDER BY, LIKE and LIMIT
+---------------------------------------------------------------------------------------------------------------------------------------
+QUESTION
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+
+1: Find Different type of departments in database?
+2: Display records with High-low salary
+3: How to see only top 3 records from a table?
+4: Show records where first name start with letter 'A'
+5: Show records where length of the lname is 4 characters
+----------------------------------------------------------------------------------------------------------------------------------
+ANSWER
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select DISTINCT dept from emplyees;
++----------+
+| dept     |
++----------+
+| Loan     |
+| Cash     |
+| IT       |
+| Deposite |
+| Account  |
++----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> order by Salary DESC;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees LIMIT 3;
++--------+------+-----------+-----------+------+--------+
+| emp_id | name | last_name | desig     | dept | Salary |
++--------+------+-----------+-----------+------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan |  37000 |
+|    102 | Sham | Mohan     | Cashier   | Cash |  25000 |
+|    103 | Paul | Thomas    | Associate | Loan |  32000 |
++--------+------+-----------+-----------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE name LIKE "A%"; or "A___"
++--------+------+-----------+------------+------+--------+
+| emp_id | name | last_name | desig      | dept | Salary |
++--------+------+-----------+------------+------+--------+
+|    104 | Alex | Fernandes | Accountant | IT   |  28000 |
+|    107 | Alex | Watt      | Lead       | Cash |  28000 |
++--------+------+-----------+------------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE last_name LIKE "____";
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    107 | Alex | Watt      | Lead      | Cash    |  28000 |
+|    108 | John | Paul      | Manager   | Account |  31000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
