@@ -2430,5 +2430,702 @@ mysql> select * from emplyees WHERE Salary=28000 OR Salary=37000 OR Salary=30000
 +--------+------+-----------+------------+---------+--------+
 5 rows in set (0.00 sec)
 
+---------------------------------------------------------------------------------------------------------------------------------------------------
+USE OF IN AND NOT IN
+--------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where dept IN('Loan','Cash','Account');
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan    |  37000 |
+|    102 | Sham | Mohan     | Cashier   | Cash    |  25000 |
+|    103 | Paul | Thomas    | Associate | Loan    |  32000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    107 | Alex | Watt      | Lead      | Cash    |  28000 |
+|    108 | John | Paul      | Manager   | Account |  31000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where dept NOT IN('Loan','Cash','Account');
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
++--------+--------+-----------+------------+----------+--------+
+2 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------------------------------------------------------------------
+BETWEEN - USE
+-------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE Salary >= 30000 AND Salary <=32000;
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    103 | Paul | Thomas    | Associate | Loan    |  32000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    108 | John | Paul      | Manager   | Account |  31000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE Salary BETWEEN 30000 AND 32000;
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    103 | Paul | Thomas    | Associate | Loan    |  32000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    108 | John | Paul      | Manager   | Account |  31000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+CASE - Categary
+-----------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select name,salary,
+    -> CASE
+    -> WHEN Salary >= 30000 THEN 'Higher Salary'
+    -> ELSE 'Low Salary'
+    -> END
+    -> AS 'Salary Category'
+    -> From emplyees;
++--------+--------+-----------------+
+| name   | salary | Salary Category |
++--------+--------+-----------------+
+| Raju   |  37000 | Higher Salary   |
+| Sham   |  25000 | Low Salary      |
+| Paul   |  32000 | Higher Salary   |
+| Alex   |  28000 | Low Salary      |
+| Victor |  26000 | Low Salary      |
+| Rick   |  30000 | Higher Salary   |
+| Alex   |  28000 | Low Salary      |
+| John   |  31000 | Higher Salary   |
+| Rick   |  30000 | Higher Salary   |
++--------+--------+-----------------+
+9 rows in set (0.00 sec)
+
+mysql> select name,salary,
+    -> case
+    -> when salary >=32000 Then 'Higher Salary'
+    -> when salary >=30000 AND salary < 32000 Then 'Mid Salary'
+    -> ELSE 'Low Salary'
+    -> End
+    -> AS 'Salary Category'
+    -> from emplyees;
++--------+--------+-----------------+
+| name   | salary | Salary Category |
++--------+--------+-----------------+
+| Raju   |  37000 | Higher Salary   |
+| Sham   |  25000 | Low Salary      |
+| Paul   |  32000 | Higher Salary   |
+| Alex   |  28000 | Low Salary      |
+| Victor |  26000 | Low Salary      |
+| Rick   |  30000 | Mid Salary      |
+| Alex   |  28000 | Low Salary      |
+| John   |  31000 | Mid Salary      |
+| Rick   |  30000 | Mid Salary      |
++--------+--------+-----------------+
+9 rows in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------
+USE OF NULL AND NOT LIKE
+----------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from person;
++------------+----------+---------------------+
+| jd         | jt       | jdt                 |
++------------+----------+---------------------+
+| 2025-04-17 | 20:08:45 | 2025-06-17 07:32:54 |
+| 2025-04-17 | 20:08:45 | 2025-06-17 07:32:54 |
+| 2025-06-18 | 07:37:11 | 2025-06-18 07:37:11 |
++------------+----------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from person
+    -> WHERE jt is NULL;
+Empty set (0.00 sec)
+
+mysql> select * from person
+    -> Where jd is Null;
+Empty set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------------
+USE OF NULL & NOT NILL
+-------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where name like 'R%';
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan    |  37000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where name NOT LIKE 'R%';
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
++--------+--------+-----------+------------+----------+--------+
+6 rows in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------------------
+Exercise - 7
+----------------------------------------------------------------------------------------------------------------------------
+QYESTION
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+-> Find employees whose salary are between 30000 to 40000
+-> Find employees whose first name start with 'R' or 'S'
+-> Find employee whose salary=25000 and department should be 'Cash'
+-> Find employees from following designation Manager, Lead and Associate
+->
++--------+--------+-------------+
+| name   | salary | Salary in $ |
++--------+--------+-------------+
+| Raju   |  37000 |    440.4762 |
+| Sham   |  25000 |    297.6190 |
+| Paul   |  32000 |    380.9524 |
+| Alex   |  28000 |    333.3333 |
+| Victor |  26000 |    309.5238 |
+| Rick   |  30000 |    357.1429 |
+| Alex   |  28000 |    333.3333 |
+| John   |  31000 |    369.0476 |
+| Rick   |  30000 |    357.1429 |
++--------+--------+-------------+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+ANSWER
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where salary BETWEEN 30000 AND 40000;
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan    |  37000 |
+|    103 | Paul | Thomas    | Associate | Loan    |  32000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    108 | John | Paul      | Manager   | Account |  31000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> WHERE name LIKE "R%" OR name LIKE "S%";
++--------+------+-----------+-----------+---------+--------+
+| emp_id | name | last_name | desig     | dept    | Salary |
++--------+------+-----------+-----------+---------+--------+
+|    101 | Raju | Sharma    | Manager   | Loan    |  37000 |
+|    102 | Sham | Mohan     | Cashier   | Cash    |  25000 |
+|    106 | Rick | Watt      | Manager   | Account |  30000 |
+|    109 | Rick | Watt      | Probation | Loan    |  30000 |
++--------+------+-----------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emplyees
+    -> where salary = 25000 AND dept = 'Cash';
++--------+------+-----------+---------+------+--------+
+| emp_id | name | last_name | desig   | dept | Salary |
++--------+------+-----------+---------+------+--------+
+|    102 | Sham | Mohan     | Cashier | Cash |  25000 |
++--------+------+-----------+---------+------+--------+
+1 row in set (0.00 sec)
+mysql> select * from emplyees
+    -> WHERE desig in("Manager","Lead","Associate");
++--------+--------+-----------+-----------+----------+--------+
+| emp_id | name   | last_name | desig     | dept     | Salary |
++--------+--------+-----------+-----------+----------+--------+
+|    101 | Raju   | Sharma    | Manager   | Loan     |  37000 |
+|    103 | Paul   | Thomas    | Associate | Loan     |  32000 |
+|    105 | Victor | Das       | Associate | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager   | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead      | Cash     |  28000 |
+|    108 | John   | Paul      | Manager   | Account  |  31000 |
++--------+--------+-----------+-----------+----------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> select name,salary,
+    -> CASE
+    -> WHEN Salary!=0 Then salary/84
+    -> END
+    -> AS 'Salary in $'
+    -> from emplyees;
++--------+--------+-------------+
+| name   | salary | Salary in $ |
++--------+--------+-------------+
+| Raju   |  37000 |    440.4762 |
+| Sham   |  25000 |    297.6190 |
+| Paul   |  32000 |    380.9524 |
+| Alex   |  28000 |    333.3333 |
+| Victor |  26000 |    309.5238 |
+| Rick   |  30000 |    357.1429 |
+| Alex   |  28000 |    333.3333 |
+| John   |  31000 |    369.0476 |
+| Rick   |  30000 |    357.1429 |
++--------+--------+-------------+
+9 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+UNIQUE CONTRAIN
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> Create table contact(
+    -> mob VARCHAR(15) UNIQUE
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into contact values(123456);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from contact;
++--------+
+| mob    |
++--------+
+| 123456 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> insert into contact values(1234567890);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into contact values(1234567890);
+ERROR 1062 (23000): Duplicate entry '1234567890' for key 'contact.mob'
+---------------------------------------------------------------------------------------------------------------------
+CHECK CONSTRAINS - LESS THAN 10 DIGITS
+---------------------------------------------------------------------------------------------------------------------
+mysql> create table contact1(
+    -> mob VARCHAR(15) UNIQUE CHECK(LENGTH(mob)>=10)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc contact1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> insert into contact1 values(123456);
+ERROR 3819 (HY000): Check constraint 'contact1_chk_1' is violated.
+mysql> insert into contact1 values(1234567890);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into contact1 values(1234567891);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from contact1;
++------------+
+| mob        |
++------------+
+| 1234567890 |
+| 1234567891 |
++------------+
+2 rows in set (0.00 sec)
+
+mysql> create table contact2(
+    -> mob VARCHAR(15) UNIQUE,
+    -> Constraint Mobno_is_less_Than_10Digits check(LENGTH(mob)>=10)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc contact2;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into contact2 values(1234567890);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into contact2 values(123456789);
+ERROR 3819 (HY000): Check constraint 'Mobno_is_less_Than_10Digits' is violated.
+-----------------------------------------------------------------------------------------------------------
+ALTERING TABLE
+---------------------------------------------------------------------------------------------------------
+
+mysql> ALTER TABLE Contact
+    -> Add column name VARCHAR(50);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from contact;
++------------+------+
+| mob        | name |
++------------+------+
+| 123456     | NULL |
+| 1234567890 | NULL |
+| 1234567891 | NULL |
++------------+------+
+3 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------
+DROP TABLE COLUMN ALTER
+----------------------------------------------------------------------------------------------------------------
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+mysql> ALTER TABLE Contact
+    -> Drop column name;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+----------------------------------------------------------------------------------------------------------------
+RENAMING A COLUMN AND TABLE NAME
+----------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++--------+--------+-----------+------------+----------+--------+
+| emp_id | name   | last_name | desig      | dept     | Salary |
++--------+--------+-----------+------------+----------+--------+
+|    101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+|    102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+|    103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+|    104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+|    105 | Victor | Das       | Associate  | Deposite |  26000 |
+|    106 | Rick   | Watt      | Manager    | Account  |  30000 |
+|    107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+|    108 | John   | Paul      | Manager    | Account  |  31000 |
+|    109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++--------+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> desc emplyees;
++-----------+-------------+------+-----+-----------+----------------+
+| Field     | Type        | Null | Key | Default   | Extra          |
++-----------+-------------+------+-----+-----------+----------------+
+| emp_id    | int         | NO   | PRI | NULL      | auto_increment |
+| name      | varchar(50) | NO   |     | NULL      |                |
+| last_name | varchar(50) | YES  |     | NULL      |                |
+| desig     | varchar(50) | NO   |     | Probation |                |
+| dept      | varchar(50) | NO   |     | NULL      |                |
+| Salary    | int         | NO   |     | 25000     |                |
++-----------+-------------+------+-----+-----------+----------------+
+6 rows in set (0.00 sec)
+mysql> ALTER TABLE EMPLYEES
+    -> RENAME COLUMN emp_id to id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc emplyees;
++-----------+-------------+------+-----+-----------+----------------+
+| Field     | Type        | Null | Key | Default   | Extra          |
++-----------+-------------+------+-----+-----------+----------------+
+| id        | int         | NO   | PRI | NULL      | auto_increment |
+| name      | varchar(50) | NO   |     | NULL      |                |
+| last_name | varchar(50) | YES  |     | NULL      |                |
+| desig     | varchar(50) | NO   |     | Probation |                |
+| dept      | varchar(50) | NO   |     | NULL      |                |
+| Salary    | int         | NO   |     | 25000     |                |
++-----------+-------------+------+-----+-----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from emplyees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++-----+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+HOW TO CHANGE A TABLE NAME
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from emplyees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++-----+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER Table emplyees
+    -> RENAME TO Employees;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from emplyees;
+ERROR 1146 (42S02): Table 'bank_db.emplyees' doesn't exist
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
++-----+--------+-----------+------------+----------+--------+
+9 rows in set (0.00 sec)
+mysql> desc employees;
++-----------+-------------+------+-----+-----------+----------------+
+| Field     | Type        | Null | Key | Default   | Extra          |
++-----------+-------------+------+-----+-----------+----------------+
+| id        | int         | NO   | PRI | NULL      | auto_increment |
+| name      | varchar(50) | NO   |     | NULL      |                |
+| last_name | varchar(50) | YES  |     | NULL      |                |
+| desig     | varchar(50) | NO   |     | Probation |                |
+| dept      | varchar(50) | NO   |     | NULL      |                |
+| Salary    | int         | NO   |     | 25000     |                |
++-----------+-------------+------+-----+-----------+----------------+
+6 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+HOW TO ADD DEFAULT VALUE TO A COLUMN
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(15) | YES  | UNI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+mysql> ALTER TABLE contact
+    -> MODIFY mob VARCHAR(20) DEFAULT 'UNKNOWN';
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(20) | YES  | UNI | UNKNOWN |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+mysql> INSERT INTO contact (mob) VALUES ('Hello');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> desc contact;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| mob   | varchar(20) | YES  | UNI | UNKNOWN |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from contact;
++------------+
+| mob        |
++------------+
+| 123456     |
+| 1234567890 |
+| 1234567891 |
+| Hello      |
++------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO contact (mob) VALUES ('Hello');
+ERROR 1062 (23000): Duplicate entry 'Hello' for key 'contact.mob'
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
             
