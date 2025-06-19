@@ -3093,19 +3093,276 @@ mysql> select * from contact;
 mysql> INSERT INTO contact (mob) VALUES ('Hello');
 ERROR 1062 (23000): Duplicate entry 'Hello' for key 'contact.mob'
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+MANY TO MANYY
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE DATABASE INSTITUTE;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use institute;
+Database changed
+mysql> CREATE TABLE students(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> student_name VARCHAR(250)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE courses(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> student_name VARCHAR(250),
+    -> FEES INT
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_institute |
++---------------------+
+| courses             |
+| students            |
++---------------------+
+2 rows in set (0.01 sec)
+
+mysql> CREATE TABLE students_courses(
+    -> students_id INT,
+    -> courses_id INT,
+    -> FOREIGN KEY (students_id) REFERENCES students(id),
+    -> FOREIGN KEY (courses_id) REFERENCES courses(id)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> show TABLES;
++---------------------+
+| Tables_in_institute |
++---------------------+
+| courses             |
+| students            |
+| students_courses    |
++---------------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO students(student_name)
+    ->  VALUES ('Raju'),('Sham'),('Paul'),('Alex');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO courses(id,student_name,fees)
+    -> VALUES (101,'PD',3000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO courses(student_name,fees)
+    -> VALUES('java',5000),('SQL',40000),('Python',6000),('Linux',10000);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++----+--------------+
+| id | student_name |
++----+--------------+
+|  1 | Raju         |
+|  2 | Sham         |
+|  3 | Paul         |
+|  4 | Alex         |
++----+--------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from courses;
++-----+--------------+-------+
+| id  | student_name | FEES  |
++-----+--------------+-------+
+| 101 | PD           |  3000 |
+| 102 | java         |  5000 |
+| 103 | SQL          | 40000 |
+| 104 | Python       |  6000 |
+| 105 | Linux        | 10000 |
++-----+--------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE courses
+    -> RENAME column student_name to course_name;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from courses;
++-----+-------------+-------+
+| id  | course_name | FEES  |
++-----+-------------+-------+
+| 101 | PD          |  3000 |
+| 102 | java        |  5000 |
+| 103 | SQL         | 40000 |
+| 104 | Python      |  6000 |
+| 105 | Linux       | 10000 |
++-----+-------------+-------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO students_courses(students_id, courses_id)
+    -> VALUES (1, 101),(1, 102),(2, 105),(1, 105),(3, 103),(2, 102),(4, 104);
+Query OK, 7 rows affected (0.03 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from students_courses;
++-------------+------------+
+| students_id | courses_id |
++-------------+------------+
+|           1 |        101 |
+|           1 |        102 |
+|           2 |        105 |
+|           1 |        105 |
+|           3 |        103 |
+|           2 |        102 |
+|           4 |        104 |
++-------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from students;
++----+--------------+
+| id | student_name |
++----+--------------+
+|  1 | Raju         |
+|  2 | Sham         |
+|  3 | Paul         |
+|  4 | Alex         |
++----+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT student_name, course_name
+    -> FROM students
+    -> JOIN students_courses ON students.id = students_courses.students_id
+    -> JOIN courses ON courses.id = students_courses.courses_id;
++--------------+-------------+
+| student_name | course_name |
++--------------+-------------+
+| Raju         | PD          |
+| Raju         | java        |
+| Raju         | Linux       |
+| Sham         | Linux       |
+| Sham         | java        |
+| Paul         | SQL         |
+| Alex         | Python      |
++--------------+-------------+
+7 rows in set (0.00 sec)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+EXCERSISE - 09 SAME ABOVE tables
+-----------------------------------------------------------------------------------------------
+mysql> SELECT student_name, COUNT(course_name)
+    -> FROM students
+    -> JOIN students_courses ON students.id = students_courses.students_id
+    -> JOIN courses ON courses.id = students_courses.courses_id
+    -> GROUP BY student_name;
++--------------+--------------------+
+| student_name | COUNT(course_name) |
++--------------+--------------------+
+| Raju         |                  3 |
+| Sham         |                  2 |
+| Paul         |                  1 |
+| Alex         |                  1 |
++--------------+--------------------+
+4 rows in set (0.00 sec)
 
+mysql> SELECT course_name, COUNT(student_name)
+    -> FROM courses
+    -> JOIN students_courses ON courses.id = students_courses.courses_id
+    -> JOIN students ON students.id = students_courses.students_id
+    -> GROUP BY course_name;
++-------------+---------------------+
+| course_name | COUNT(student_name) |
++-------------+---------------------+
+| PD          |                   1 |
+| java        |                   2 |
+| Linux       |                   2 |
+| SQL         |                   1 |
+| Python      |                   1 |
++-------------+---------------------+
+5 rows in set (0.00 sec)
 
-
-
-
+mysql> SELECT student_name, SUM(fees)
+    -> FROM students
+    -> JOIN students_courses ON students.id = students_courses.students_id
+    -> JOIN courses ON courses.id = students_courses.courses_id
+    -> GROUP BY student_name;
++--------------+-----------+
+| student_name | SUM(fees) |
++--------------+-----------+
+| Raju         |     18000 |
+| Sham         |     15000 |
+| Paul         |     40000 |
+| Alex         |      6000 |
++--------------+-----------+
+4 rows in set (0.00 sec)
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+VIRTUAL TABLES
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> CREATE VIEW insta_info AS
+    -> SELECT student_name, course_name, fees
+    -> FROM students
+    -> JOIN students_courses ON students_courses.students_id = students.id
+    -> JOIN courses ON students_courses.courses_id = courses.id;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT * FROM insta_info;
++--------------+-------------+-------+
+| student_name | course_name | fees  |
++--------------+-------------+-------+
+| Raju         | PD          |  3000 |
+| Raju         | java        |  5000 |
+| Raju         | Linux       | 10000 |
+| Sham         | Linux       | 10000 |
+| Sham         | java        |  5000 |
+| Paul         | SQL         | 40000 |
+| Alex         | Python      |  6000 |
++--------------+-------------+-------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT student_name FROM insta_info;
++--------------+
+| student_name |
++--------------+
+| Raju         |
+| Raju         |
+| Raju         |
+| Sham         |
+| Sham         |
+| Paul         |
+| Alex         |
++--------------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM insta_info WHERE student_name = 'Raju';
++--------------+-------------+-------+
+| student_name | course_name | fees  |
++--------------+-------------+-------+
+| Raju         | PD          |  3000 |
+| Raju         | java        |  5000 |
+| Raju         | Linux       | 10000 |
++--------------+-------------+-------+
+3 rows in set (0.00 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_institute |
++---------------------+
+| courses             |
+| insta_info          |
+| students            |
+| students_courses    |
++---------------------+
+4 rows in set (0.00 sec)
+
+mysql> drop view insta_info;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_institute |
++---------------------+
+| courses             |
+| students            |
+| students_courses    |
++---------------------+
+3 rows in set (0.00 sec)
 -----------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
