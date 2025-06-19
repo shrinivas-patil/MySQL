@@ -3362,18 +3362,255 @@ mysql> show tables;
 +---------------------+
 3 rows in set (0.00 sec)
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+HAVING AND ROLLUP CLAUSE
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> CREATE VIEW insta_info AS
+    -> SELECT student_name, course_name, fees
+    -> FROM students
+    -> JOIN students_courses ON students_courses.students_id = students.id
+    -> JOIN courses ON students_courses.courses_id = courses.id;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT * FROM insta_info;
++--------------+-------------+-------+
+| student_name | course_name | fees  |
++--------------+-------------+-------+
+| Raju         | PD          |  3000 |
+| Raju         | java        |  5000 |
+| Raju         | Linux       | 10000 |
+| Sham         | Linux       | 10000 |
+| Sham         | java        |  5000 |
+| Paul         | SQL         | 40000 |
+| Alex         | Python      |  6000 |
++--------------+-------------+-------+
+7 rows in set (0.01 sec)
+
+mysql> select student_name from insta_info GROUP BY student_name;
++--------------+
+| student_name |
++--------------+
+| Raju         |
+| Sham         |
+| Paul         |
+| Alex         |
++--------------+
+4 rows in set (0.00 sec)
+
+mysql> select student_name, SUM(fees) from insta_info GROUP BY student_name;
+
++--------------+-----------+
+| student_name | SUM(fees) |
++--------------+-----------+
+| Raju         |     18000 |
+| Sham         |     15000 |
+| Paul         |     40000 |
+| Alex         |      6000 |
++--------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select student_name, SUM(fees) from insta_info GROUP BY student_name HAVING sum(fees)>10000;
++--------------+-----------+
+| student_name | SUM(fees) |
++--------------+-----------+
+| Raju         |     18000 |
+| Sham         |     15000 |
+| Paul         |     40000 |
++--------------+-----------+
+3 rows in set (0.01 sec)
+
+mysql> select student_name, SUM(fees) from insta_info GROUP BY student_name with rollup;
++--------------+-----------+
+| student_name | SUM(fees) |
++--------------+-----------+
+| Alex         |      6000 |
+| Paul         |     40000 |
+| Raju         |     18000 |
+| Sham         |     15000 |
+| NULL         |     79000 |
++--------------+-----------+
+5 rows in set (0.02 sec)
+
+mysql> select IFNULL(student_name,"TOTAL"), SUM(fees) from insta_info GROUP
+BY student_name with rollup;
++------------------------------+-----------+
+| IFNULL(student_name,"TOTAL") | SUM(fees) |
++------------------------------+-----------+
+| Alex                         |      6000 |
+| Paul                         |     40000 |
+| Raju                         |     18000 |
+| Sham                         |     15000 |
+| TOTAL                        |     79000 |
++------------------------------+-----------+
+5 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+STORED ROUTINE
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+select * from employees order by salary;
+
+DELIMITER $$
+CREATE procedure emp_info()
+BEGIN
+	select * from employees order by salary;
+END $$
+
+DELIMITER ;emp_info
+IN WORKBENCH -> bank_db -> stored procedure -> emp_info -> click on right side button
+call bank_db.emp_info();
+
+select * from employees WHERE name = 'raju';					
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ARGUMENT PASSING IN STORED PROCEDURE
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE PROCEDURE get_emid(IN p_name VARCHAR(100))
+BEGIN
+    SELECT id 
+    FROM employees 
+    WHERE name = p_name;
+END $$
+
+DELIMITER ;
+
+call bank_db.get_emid('raju');
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+RETURNING OUTPUT IN A VARIABLE STORED PROCEDURE
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+DELIMITER $$
+REFRESH IT -> get_sum_by_dept to settings type loan
+
+CREATE PROCEDURE get_sum_by_dept(IN p_dept VARCHAR(100), OUT p_sum DECIMAL(10, 2))
+BEGIN
+    SELECT SUM(salary) INTO p_sum 
+    FROM employees 
+    WHERE dept = p_dept;
+END $$
+
+DELIMITER ;
+
+
+set @p_sum = 0;
+call bank_db.get_sum_by_dept('loan', @p_sum);
+select @p_sum;
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+USER DEFINE FUNCTION
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE FUNCTION emp_name_max_salary() RETURNS VARCHAR(100)
+DETERMINISTIC NO SQL READS SQL DATA 
+BEGIN
+	DECLARE v_max INT;
+    DECLARE v_emp_name VARCHAR(100);
+    SELECT MAX(salary) INTO v_max from employees;
+    select name into v_emp_name FROM employees WHERE salary = v_max;
+    
+    return v_emp_name;
+END $$
+
+DELIMITER ;
+
+go to bank_db to function -> given name function -> click on right side
+
+select bank_db.emp_name_max_salary();
+
+select * from employees;
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+select * from employees;
+
+select sum(Salary) from employees;
+
+select sum(Salary) over() as sum_salary from employees;
+
+select 
+id,
+name,
+sum(Salary)
+ over() as sum_salary from employees;
+
+ select 
+id,
+name,
+salary,
+sum(Salary) over(ORDER by id) as sum_salary from employees;
+
+select 
+id,
+name,
+salary,
+max(Salary) over(ORDER by id) as sum_salary from employees;
+
+select 
+row_number() Over() as row_no, 
+id,
+dept,
+salary,
+salary from employees;
+
+select 
+row_number() Over(order by salary) as row_no, 
+id,
+dept,
+salary,
+salary from employees;
+
+select 
+row_number() Over(partition by dept) as row_no, 
+id,
+dept,
+salary,
+salary from employees;
+
+select 
+id,
+dept,
+salary,
+RANK() OVER() as rank_sal from employees;
+
+select 
+id,
+dept,
+salary,
+RANK() OVER(order by salary) as rank_sal from employees;
+
+select 
+id,
+dept,
+salary,
+RANK() OVER(order by salary DESC) as rank_sal from employees;
+
+select 
+id,
+dept,
+salary,
+DENSE_RANK() OVER(order by salary DESC) as rank_sal from employees;
+
+select 
+id,
+dept,
+salary,
+LAG(salary) OVER() as diff_sal from employees;
+
+select 
+id,
+dept,
+salary,
+LEAD(salary) OVER() as diff_sal from employees;
+
+select 
+id,
+dept,
+salary,
+salary -LAG(salary) OVER(order by salary desc) as diff_sal from employees;
+
+select 
+id,
+dept,
+salary,
+salary -LEAD(salary) OVER(order by salary desc) as diff_sal from employees;
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
