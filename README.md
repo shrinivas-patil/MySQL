@@ -3616,13 +3616,499 @@ https://dev.mysql.com/doc/index-other.html
 mysql -u root -p < employees.sql
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
+TRIGGERS
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+use bank_db;
+
+select * from employees;
+
+insert into employees(name, last_name,desig,dept,salary)
+VALUES('test','test','test','IT',-25000);
+
+select * from employees;
+
+DELIMITER //
+
+CREATE TRIGGER trigger_before_insert
+BEFORE INSERT ON employees
+FOR EACH ROW
+BEGIN
+    IF NEW.salary < 0 THEN
+        SET NEW.salary = 0;
+    END IF;
+END//
+
+DELIMITER ;
+
+insert into employees(name, last_name,desig,dept,salary)
+VALUES('test','test','test','IT',-25000);
+
+select * from employees;
+
+show triggers;
+
+drop trigger trigger_before_insert;
+
+show triggers;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> use bank_db;
+Database changed
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
++-----+--------+-----------+------------+----------+--------+
+11 rows in set (0.00 sec)
+
+mysql> insert into employees(name, last_name,desig,dept,salary)
+    -> VALUES('test','test','test','IT',-25000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
+| 112 | test   | test      | test       | IT       | -25000 |
++-----+--------+-----------+------------+----------+--------+
+12 rows in set (0.00 sec)
+
+mysql> DELIMITER //
+mysql>
+mysql> CREATE TRIGGER trigger_before_insert
+    -> BEFORE INSERT ON employees
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.salary < 0 THEN
+    ->         SET NEW.salary = 0;
+    ->     END IF;
+    -> END//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql> insert into employees(name, last_name,desig,dept,salary)
+    -> VALUES('test','test','test','IT',-25000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
+| 112 | test   | test      | test       | IT       | -25000 |
+| 113 | test   | test      | test       | IT       |      0 |
++-----+--------+-----------+------------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> show triggers;
++-----------------------+--------+-----------+------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| Trigger               | Event  | Table     | Statement
+                                                | Timing | Created
+      | sql_mode
+                                                  | Definer        | character_set_client | collation_connection | Database Collation |
++-----------------------+--------+-----------+------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+| trigger_before_insert | INSERT | employees | BEGIN
+    IF NEW.salary < 0 THEN
+        SET NEW.salary = 0;
+    END IF;
+END | BEFORE | 2025-06-19 19:40:44.47 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | root@localhost | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++-----------------------+--------+-----------+------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
+
+mysql>
+mysql> drop trigger trigger_before_insert;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show triggers;
+Empty set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+CTE - COMMON TABLE EXPRESSION
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
+| 112 | test   | test      | test       | IT       | -25000 |
+| 113 | test   | test      | test       | IT       |      0 |
++-----+--------+-----------+------------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select dept,AVG(salary) from employees GROUP by dept;
++----------+-------------+
+| dept     | AVG(salary) |
++----------+-------------+
+| Loan     |  33000.0000 |
+| Cash     |  26500.0000 |
+| IT       |  -4400.0000 |
+| Deposite |  26000.0000 |
+| Account  |  30500.0000 |
++----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> WITH avg_sal AS (
+    ->     SELECT dept, AVG(salary) AS avg_salary
+    ->     FROM employees
+    ->     GROUP BY dept
+    -> )
+    -> SELECT
+    -> e.id, e.name, e.salary, a.avg_salary
+    -> from employees e
+    -> JOIN
+    -> avg_sal a on e.dept=a.dept
+    -> where
+    -> e.salary>a.avg_salary;
++-----+------+--------+------------+
+| id  | name | salary | avg_salary |
++-----+------+--------+------------+
+| 101 | Raju |  37000 | 33000.0000 |
+| 104 | Alex |  28000 | -4400.0000 |
+| 107 | Alex |  28000 | 26500.0000 |
+| 108 | John |  31000 | 30500.0000 |
+| 111 | test |      0 | -4400.0000 |
+| 113 | test |      0 | -4400.0000 |
++-----+------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> WITH max_sal AS (
+    -> SELECT dept, MAX(salary) AS max_salary
+    -> FROM employees
+    ->  GROUP BY dept
+    -> )
+    ->  SELECT
+    -> e.id, e.name, e.dept, e.salary
+    -> from employees e
+    -> JOIN
+    -> max_sal m on e.dept=m.dept
+    ->  where
+    ->  e.salary=m.max_salary;
++-----+--------+----------+--------+
+| id  | name   | dept     | salary |
++-----+--------+----------+--------+
+| 101 | Raju   | Loan     |  37000 |
+| 104 | Alex   | IT       |  28000 |
+| 105 | Victor | Deposite |  26000 |
+| 107 | Alex   | Cash     |  28000 |
+| 108 | John   | Account  |  31000 |
++-----+--------+----------+--------+
+5 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+INDEX
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| employees          |
+| information_schema |
+| institute          |
+| mysql              |
+| performance_schema |
+| psadb1             |
+| school_db          |
+| store_db           |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use bank_db;
+Database changed
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
+| 112 | test   | test      | test       | IT       | -25000 |
+| 113 | test   | test      | test       | IT       |      0 |
++-----+--------+-----------+------------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select * from employees where name = "Alex";
++-----+------+-----------+------------+------+--------+
+| id  | name | last_name | desig      | dept | Salary |
++-----+------+-----------+------------+------+--------+
+| 104 | Alex | Fernandes | Accountant | IT   |  28000 |
+| 107 | Alex | Watt      | Lead       | Cash |  28000 |
++-----+------+-----------+------------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| employees          |
+| information_schema |
+| institute          |
+| mysql              |
+| performance_schema |
+| psadb1             |
+| school_db          |
+| store_db           |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use employees;
+Database changed
+
+mysql> select * from employees limit 5;
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+|  10001 | 1953-09-02 | Georgi     | Facello   | M      | 1986-06-26 |
+|  10002 | 1964-06-02 | Bezalel    | Simmel    | F      | 1985-11-21 |
+|  10003 | 1959-12-03 | Parto      | Bamford   | M      | 1986-08-28 |
+|  10004 | 1954-05-01 | Chirstian  | Koblick   | M      | 1986-12-01 |
+|  10005 | 1955-01-21 | Kyoichi    | Maliniak  | M      | 1989-09-12 |
++--------+------------+------------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+select * from employees
+
+| 491231 | 1956-06-11 | Mihalis        | Farrag           | M      | 1994-02-06 |
+| 491232 | 1958-03-15 | Marla          | Hasenauer        | M      | 1987-08-07 |
+| 491233 | 1962-01-16 | Ohad           | Doering          | F      | 1985-06-22 |
+| 491234 | 1959-02-26 | Mohit          | Sankaranarayanan | F      | 1987-06-27 |
+| 491235 | 1961-12-11 | Gopalakrishnan | Makinen          | M      | 1992-03-25 |
+| 491236 | 1963-07-26 | Malu           | Wiegley          | M      | 1989-11-27 |
+| 491237 | 1954-06-21 | Avishai        | Bednarek         | M      | 1986-11-18 |
+| 491238 | 1952-10-07 | Luise          | Soicher          | M      | 1985-11-20 |
+| 491239 | 1958-01-25 | Danai          | Nanard           | M      | 1985-07-22 |
+| 491240 | 1958-08-04 | Sasan          | Kemmerer         | F      | 1986-01-03 |
+| 491241 | 1956-09-24 | Christoper     | Kropatsch        | F      | 1989-12-05 |
+| 491242 | 1959-03-14 | Brewster       | Kleiser          | F      | 1997-07-27 |
+| 491243 | 1962-08-26 | Ipke           | Welham           | M      | 1985-10-02 |
+| 491244 | 1957-04-21 | Collette       | Berstel          | F      | 1985-04-08 |
+| 491245 | 1961-11-24 | Mart           | Cappelletti      | M      | 1988-12-25 |
+| 491246 | 1960-08-15 | Bowen          | Yurov            | F      | 1992-12-30 |
+| 491247 | 1953-07-01 | Arch           | Macedo           | M      | 1989-01-05 |
+| 491248 | 1953-06-23 | Rimli          | Perez            | M      | 1990-04-27 |
+| 491249 | 1961-04-28 | Abdelghani     | Velardi          | F      | 1991-02-04 |
+MORE
+
+mysql> select * from employees where first_name = "gino";
++--------+------------+------------+---------------+--------+------------+
+| emp_no | birth_date | first_name | last_name     | gender | hire_date  |
++--------+------------+------------+---------------+--------+------------+
+|  10063 | 1952-08-06 | Gino       | Leonhardt     | F      | 1989-04-08 |
+|  10860 | 1961-11-05 | Gino       | Werthner      | M      | 1992-03-11 |
+|  11291 | 1953-11-01 | Gino       | Glowinski     | M      | 1985-10-20 |
+|  11368 | 1959-07-31 | Gino       | Bail          | M      | 1992-01-06 |
+|  12333 | 1964-05-01 | Gino       | Peck          | M      | 1990-09-20 |
+|  12704 | 1962-09-08 | Gino       | Tetzlaff      | F      | 1994-07-16 |
+|  13320 | 1954-08-04 | Gino       | Bahr          | F      | 1989-09-29 |
+|  14177 | 1964-08-01 | Gino       | Stille        | F      | 1996-02-12 |
+|  14256 | 1952-09-05 | Gino       | Ferriere      | F      | 1993-12-14 |
+|  16981 | 1956-05-10 | Gino       | Fontan        | M      | 1998-10-20 |
+|  18296 | 1957-08-21 | Gino       | Cesareni      | M      | 1994-09-04 |
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------------------------
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| employees          |
+| information_schema |
+| institute          |
+| mysql              |
+| performance_schema |
+| psadb1             |
+| school_db          |
+| store_db           |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use bank_db;
+Database changed
+mysql> select * from employees;
++-----+--------+-----------+------------+----------+--------+
+| id  | name   | last_name | desig      | dept     | Salary |
++-----+--------+-----------+------------+----------+--------+
+| 101 | Raju   | Sharma    | Manager    | Loan     |  37000 |
+| 102 | Sham   | Mohan     | Cashier    | Cash     |  25000 |
+| 103 | Paul   | Thomas    | Associate  | Loan     |  32000 |
+| 104 | Alex   | Fernandes | Accountant | IT       |  28000 |
+| 105 | Victor | Das       | Associate  | Deposite |  26000 |
+| 106 | Rick   | Watt      | Manager    | Account  |  30000 |
+| 107 | Alex   | Watt      | Lead       | Cash     |  28000 |
+| 108 | John   | Paul      | Manager    | Account  |  31000 |
+| 109 | Rick   | Watt      | Probation  | Loan     |  30000 |
+| 110 | test   | test      | test       | IT       | -25000 |
+| 111 | test   | test      | test       | IT       |      0 |
+| 112 | test   | test      | test       | IT       | -25000 |
+| 113 | test   | test      | test       | IT       |      0 |
++-----+--------+-----------+------------+----------+--------+
+13 rows in set (0.00 sec)
+
+mysql> select * from employees where name = "Alex";
++-----+------+-----------+------------+------+--------+
+| id  | name | last_name | desig      | dept | Salary |
++-----+------+-----------+------------+------+--------+
+| 104 | Alex | Fernandes | Accountant | IT   |  28000 |
+| 107 | Alex | Watt      | Lead       | Cash |  28000 |
++-----+------+-----------+------------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| bank_db            |
+| employees          |
+| information_schema |
+| institute          |
+| mysql              |
+| performance_schema |
+| psadb1             |
+| school_db          |
+| store_db           |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use employees;
+Database changed
+
+mysql> select * from employees limit 5;
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+|  10001 | 1953-09-02 | Georgi     | Facello   | M      | 1986-06-26 |
+|  10002 | 1964-06-02 | Bezalel    | Simmel    | F      | 1985-11-21 |
+|  10003 | 1959-12-03 | Parto      | Bamford   | M      | 1986-08-28 |
+|  10004 | 1954-05-01 | Chirstian  | Koblick   | M      | 1986-12-01 |
+|  10005 | 1955-01-21 | Kyoichi    | Maliniak  | M      | 1989-09-12 |
++--------+------------+------------+-----------+--------+------------+
+5 rows in set (0.00 sec)
+mysql> select COUNT(emp_no) from employees;
++---------------+
+| COUNT(emp_no) |
++---------------+
+|        300024 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql> select * from employees where first_name = "gino";
++--------+------------+------------+---------------+--------+------------+
+| emp_no | birth_date | first_name | last_name     | gender | hire_date  |
++--------+------------+------------+---------------+--------+------------+
+|  10063 | 1952-08-06 | Gino       | Leonhardt     | F      | 1989-04-08 |
+|  10860 | 1961-11-05 | Gino       | Werthner      | M      | 1992-03-11 |
+|  11291 | 1953-11-01 | Gino       | Glowinski     | M      | 1985-10-20 |
+|  11368 | 1959-07-31 | Gino       | Bail          | M      | 1992-01-06 |
+|  12333 | 1964-05-01 | Gino       | Peck          | M      | 1990-09-20 |
+|  12704 | 1962-09-08 | Gino       | Tetzlaff      | F      | 1994-07-16 |
+|  13320 | 1954-08-04 | Gino       | Bahr          | F      | 1989-09-29 |
+|  14177 | 1964-08-01 | Gino       | Stille        | F      | 1996-02-12 |
+|  14256 | 1952-09-05 | Gino       | Ferriere      | F      | 1993-12-14 |
+|  16981 | 1956-05-10 | Gino       | Fontan        | M      | 1998-10-20 |
+|  18296 | 1957-08-21 | Gino       | Cesareni      | M      | 1994-09-04 |
+|  18863 | 1957-08-30 | Gino       | Perez         | M      | 1992-05-17 |
+|  20471 | 1958-05-21 | Gino       | Haumacher     | F      | 1989-11-18 |
+|  23494 | 1962-06-12 | Gino       | Deyuan        | M      | 1994-01-31 |
+more (0.20 sex)
+
+mysql> create index i_name on employees(first_name);
+Query OK, 0 rows affected (0.76 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees where first_name = "gino";
++--------+------------+------------+---------------+--------+------------+
+| emp_no | birth_date | first_name | last_name     | gender | hire_date  |
++--------+------------+------------+---------------+--------+------------+
+|  10063 | 1952-08-06 | Gino       | Leonhardt     | F      | 1989-04-08 |
+|  10860 | 1961-11-05 | Gino       | Werthner      | M      | 1992-03-11 |
+|  11291 | 1953-11-01 | Gino       | Glowinski     | M      | 1985-10-20 |
+|  11368 | 1959-07-31 | Gino       | Bail          | M      | 1992-01-06 |
+|  12333 | 1964-05-01 | Gino       | Peck          | M      | 1990-09-20 |
+|  12704 | 1962-09-08 | Gino       | Tetzlaff      | F      | 1994-07-16 |
+|  13320 | 1954-08-04 | Gino       | Bahr          | F      | 1989-09-29 |
+|  14177 | 1964-08-01 | Gino       | Stille        | F      | 1996-02-12 |
+|  14256 | 1952-09-05 | Gino       | Ferriere      | F      | 1993-12-14 |
+|  16981 | 1956-05-10 | Gino       | Fontan        | M      | 1998-10-20 |
+|  18296 | 1957-08-21 | Gino       | Cesareni      | M      | 1994-09-04 |
+|  18863 | 1957-08-30 | Gino       | Perez         | M      | 1992-05-17 |
+|  20471 | 1958-05-21 | Gino       | Haumacher     | F      | 1989-11-18 |
+|  23494 | 1962-06-12 | Gino       | Deyuan        | M      | 1994-01-31 |
+more (0.04 sec)
+
+mysql> show indexes from employees;
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| employees |          0 | PRIMARY  |            1 | emp_no      | A         |      299335 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| employees |          1 | i_name   |            1 | first_name  | A         |        1328 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.01 sec)
+
+mysql> ALTER table employees
+    -> drop index i_name;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show indexes from employees;
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| employees |          0 | PRIMARY  |            1 | emp_no      | A         |      299335 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------------------------
 
             
